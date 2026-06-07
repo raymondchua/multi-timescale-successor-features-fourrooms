@@ -1,0 +1,11 @@
+# @package domain
+defaults:
+  - Base_Domain_Miniworld
+_target_: domain.Hallway_One_Task.HallwayOneTask
+domain_id: 49 # unique id for the domain
+name: HallwayOneTask
+num_head_directions: 4
+num_unique_envs: 1 # same environment transition structure
+num_unique_tasks: 1
+project_name: hallway_one_task
+short_name: Hallway_T1

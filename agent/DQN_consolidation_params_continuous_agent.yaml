@@ -1,0 +1,15 @@
+# @package agent
+defaults:
+  - DQN_agent
+_target_: agent.DQN_consolidation_params_continuous_agent.DQNConsolidationParamsContinuousAgent
+consolidation: true # whether to use consolidation for Deep Q Network
+name: DQN_consolidation_params_continuous
+
+# beakers
+beaker_capacity: 2
+lr_consolidation: ${train.lr_consolidation}
+num_beakers: 5
+optimizer_consolidation: sgd # [rmsprop, adam, sgd]
+dqn_consolidation: true
+flow_factor: 1
+update_consolidation_every_steps: 1

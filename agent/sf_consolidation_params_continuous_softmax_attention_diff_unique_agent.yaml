@@ -1,0 +1,14 @@
+# @package agent
+defaults:
+  - sf_consolidation_params_continuous_agent
+_target_: agent.sf_consolidation_params_continuous_softmax_attention_diff_unique_agent.SFConsolidationParamsContinuousSoftmaxAttentionDiffUniqueAgent
+name: sf_consolidation_params_continuous_softmax_attention_diff_unique
+
+# misc
+optimizer_attention: adam
+apply_mask_to_keys: true
+apply_gain_sf_diff: true
+has_attention_mechanism: true
+layer_norm_keys: true
+layer_norm_values: true
+learnable_layer_norm_parameters: false

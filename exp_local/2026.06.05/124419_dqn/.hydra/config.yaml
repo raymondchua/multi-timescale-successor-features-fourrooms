@@ -1,0 +1,203 @@
+agent:
+  _target_: agent.DQN_agent.DQNAgent
+  action_shape: ???
+  action_repeat: ${env.action_repeat}
+  batch_size: ${domain.replay.batch_size}
+  critic_target_tau: 0.01
+  grad_error_bound: ${train.grad_error_bound}
+  has_task_params: false
+  hidden_dim: 256
+  learn_period: ${train.learn_period}
+  min_replay_capacity_fraction: ${replay.min_replay_capacity_fraction}
+  name: dqn
+  nstep: ${replay.nstep}
+  obs_shape: ${env.obs_shape}
+  obs_type: ${env.obs_type}
+  policy: learned
+  replay_buffer_size: ${domain.replay.replay_buffer_size}
+  use_double_q: ${train.use_double_q}
+  update_every_steps: 2
+  use_wandb: ${logging.use_wandb}
+  feature_dim: 128
+  lr: ${train.lr}
+  optimizer: ${train.optimizer}
+  optimizer_b_1: ${train.optimizer_b_1}
+  optimizer_b_2: ${train.optimizer_b_2}
+  eval_exploration_epsilon: ${eval.eval_exploration_epsilon}
+  exploration_epsilon_begin_value: 1
+  exploration_epsilon_decay_steps: ${domain.train.exploration_epsilon_decay_steps}
+  exploration_epsilon_end_value: 0.1
+  target_network_update_period: ${train.target_network_update_period}
+  use_preprocessor: true
+  use_soft_target: true
+  priority_exponent: ${replay.priority_exponent}
+  importance_sampling_exponent_begin_value: ${replay.importance_sampling_exponent_begin_value}
+  importance_sampling_exponent_end_value: ${replay.importance_sampling_exponent_end_value}
+  normalize_weights: ${replay.normalize_weights}
+  uniform_sample_probability: ${replay.uniform_sample_probability}
+  use_priority_replay: ${replay.use_priority_replay}
+  compress_state: ${replay.compress_state}
+  consolidation: false
+  task_consolidation: false
+  discount: ${domain.discount}
+  env_type: ${domain.env_type}
+  environment_height: ${domain.environment_height}
+  environment_width: ${domain.environment_width}
+  impala_conv_scale: ${domain.impala_conv_scale}
+  log_grads: false
+  lr_task: 0
+  num_stacked_frames: ${domain.num_stacked_frames}
+  num_train_frames: ${domain.train.num_train_frames}
+  seed: ${train.seed}
+  use_impala_encoder: ${domain.use_impala_encoder}
+  work_dir: ${paths.work_dir}
+  has_attention_mechanism: false
+  use_plasticity_injection: false
+  plot:
+    agent_name: DQN
+domain:
+  _target_: domain.Miniworld_Two_Tasks.MiniworldTwoTasks
+  seed: ???
+  discount: 0.99
+  environment_height: 84
+  environment_width: 84
+  num_stacked_frames: ???
+  use_framestack: false
+  action_repeat: 1
+  clip_reward: false
+  env_type: miniworld
+  eval_env_diff_train_env: false
+  gap: 0.27
+  goal_vis: true
+  good_episode_length_threshold: 1000
+  impala_conv_scale: 1
+  max_abs_reward: 1.0
+  max_episode_length: 4000
+  max_pos: 6.34
+  max_returns: 1
+  min_pos: -6.34
+  min_returns: -1
+  num_head_directions: 4
+  scale_reward: false
+  slippery_prob: 0.45
+  top_down_view: false
+  use_impala_encoder: false
+  eval:
+    eval_every_frames: 10000
+    num_eval_frames: 20000
+  finetune:
+    num_train_frames: 1000000
+    exploration_epsilon_decay_steps: 40000
+    logging:
+      experiment: finetune_miniworld
+  finetune_critic:
+    logging:
+      experiment: finetune_critic_miniworld
+  plotting:
+    title: Miniworld
+    num_clusters: 4
+    silhouette_score: true
+  post_train:
+    logging:
+      experiment: post_train_miniworld
+  post_train_all_seeds:
+    logging:
+      experiment: post_train_miniworld_all_seeds
+  pretrain:
+    num_train_frames: 3750000
+    snapshot_pretrain_dir: ./models/pretrain/${domain.pretrain.logging.experiment}/${domain.short_name}/${agent.name}/${train.seed}/sf_dim_${train.sf_dim}/feature_dim_${train.feature_dim}
+    snapshot_pretrain_task_dir: ./models/pretrain_task/${domain.pretrain.logging.experiment}/${domain.short_name}/${agent.name}/${train.seed}/sf_dim_${train.sf_dim}/feature_dim_${train.feature_dim}
+    logging:
+      experiment: pre_train_miniworld
+  replay:
+    batch_size: 32
+    replay_buffer_size: 100000
+  train:
+    exploration_epsilon_decay_steps: 1000000
+    num_train_frames: 10000
+    logging:
+      experiment: full_train_miniworld
+  test:
+    logging:
+      experiment: test_miniworld
+  visualization:
+    marker_size: 10
+    opacity: 1.0
+    plot_bgcolor: rgb(159,159,159)
+    sf_sr_correlation: false
+    sf_sr_correlation_bottleneck: false
+    top_view: false
+  domain_id: 20
+  name: MiniworldTwoTasks
+  num_unique_envs: 1
+  num_unique_tasks: 2
+  project_name: miniworld_two_tasks
+  short_name: Fourrooms_T1_T2
+update_task_every_step: 16
+env:
+  action_repeat: ???
+  obs_shape: ???
+  obs_type: pixels
+  seed: 42
+eval:
+  eval_after_each_epoch: true
+  eval_exploration_epsilon: 0.1
+  eval_after_train_step: 200000
+  evaluate_task_during_training: true
+  num_eval_episodes: 10
+logging:
+  mode: full_train_slippery_fix
+  use_wandb: true
+  wandb_dir: ./wandb
+  wandb_mode: offline
+replay:
+  compress_state: true
+  min_replay_capacity_fraction: 0.05
+  nstep: 10
+  replay_buffer_num_workers: 4
+  reset_buffer_before_each_task: false
+  use_priority_replay: false
+  priority_exponent: 0.6
+  importance_sampling_exponent_begin_value: 0.4
+  importance_sampling_exponent_end_value: 1.0
+  uniform_sample_probability: 0.001
+  normalize_weights: true
+paths:
+  work_dir: ???
+pretrain:
+  update_encoder: true
+  use_pretrained_policy: false
+snapshot:
+  base_dir: ./models/
+  save_snapshot_when_eval: false
+  save_snapshot_after_each_task: false
+  snapshot_dir: ./models/full_train/${domain.train.logging.experiment}/${domain.short_name}/${agent.name}/${train.seed}/
+  use_alternate_discount: false
+train:
+  allow_post_train: true
+  exploration_epsilon_decay_frame_fraction: ???
+  explore_every_task: false
+  explore_task_on_only_first_encounter: false
+  feature_dim: 128
+  grad_error_bound: 10.0
+  learn_period: 16
+  log_frequency: 100
+  lr: 0.0001
+  lr_consolidation: 1
+  multi_task: false
+  num_seed_frames: ???
+  num_exposure: 2
+  optimizer: adam
+  optimizer_b_1: 0.9
+  optimizer_b_2: 0.999
+  optimizer_task: adam
+  plasticity_injection: 0.5
+  predefined_task_id: None
+  reset_optimizer_before_each_task: false
+  seed: 97
+  save_coverage_frequency_factor: 10
+  sf_dim: 128
+  target_network_update_period: 1000
+  terminate_after_first_task: false
+  use_double_q: true
+  use_predefined_task_id: false

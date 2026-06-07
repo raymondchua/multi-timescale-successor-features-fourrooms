@@ -1,0 +1,5 @@
+# @package agent
+defaults:
+  - simple_sf_agent
+_target_: agent.random_policy_bias_forward_agent.RandomPolicyBiasForwardAgent
+name: random_policy_bias_forward_agent

@@ -1,0 +1,14 @@
+# @package domain
+defaults:
+  - Base_Domain_Miniworld
+_target_: domain.Miniworld_Two_Tasks.MiniworldTwoTasks
+domain_id: 20 # unique id for the domain
+name: MiniworldTwoTasks
+num_head_directions: 4
+num_unique_envs: 1 # same environment transition structure
+num_unique_tasks: 2
+project_name: miniworld_two_tasks
+short_name: Fourrooms_T1_T2
+
+plotting:
+  silhouette_score: true # set to true to plot the silhouette score

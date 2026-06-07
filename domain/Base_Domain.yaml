@@ -1,0 +1,8 @@
+# @package domain
+_target_: domain.Base_Domain
+seed: ???
+discount: 0.99
+environment_height: 84
+environment_width: 84
+num_stacked_frames: ???
+use_framestack: false

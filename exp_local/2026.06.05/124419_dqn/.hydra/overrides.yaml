@@ -1,0 +1,2 @@
+- domain.train.num_train_frames=10000
+- domain.eval.eval_every_frames=10000

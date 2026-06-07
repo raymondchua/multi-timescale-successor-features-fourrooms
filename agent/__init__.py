@@ -1,0 +1,12 @@
+from .BaseAgent import BaseAgent
+from .Epsilon_greedy_agent import EpsilonGreedyActor
+from .DQN_agent import DQNAgent
+from .simple_sf_agent import SimpleSFAgent
+from .simple_sf_online_ewc_agent import SimpleSF_online_ewc_Agent
+from .sf_consolidation_params_continuous_agent import (
+    SFConsolidationParamsContinuousAgent,
+)
+from .sf_consolidation_params_continuous_softmax_attention_diff_unique_agent import (
+SFConsolidationParamsContinuousSoftmaxAttentionDiffUniqueAgent,
+)
+from .DQN_consolidation_params_continuous_agent import DQNConsolidationParamsContinuousAgent

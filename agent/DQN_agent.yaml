@@ -1,0 +1,67 @@
+# @package agent
+_target_: agent.DQN_agent.DQNAgent
+action_shape: ??? # to be specified later
+action_repeat: ${env.action_repeat}
+batch_size: ${domain.replay.batch_size}
+critic_target_tau: 0.01
+grad_error_bound: ${train.grad_error_bound}
+has_task_params: false
+hidden_dim: 256
+learn_period: ${train.learn_period}
+#lr: ${train.lr}
+min_replay_capacity_fraction: ${replay.min_replay_capacity_fraction}
+name: dqn
+nstep: ${replay.nstep}
+obs_shape: ${env.obs_shape} # to be specified later
+obs_type: ${env.obs_type} # to be specified later
+policy: learned
+replay_buffer_size: ${domain.replay.replay_buffer_size}
+use_double_q: ${train.use_double_q}
+update_every_steps: 2
+use_wandb: ${logging.use_wandb}
+feature_dim: 128
+
+lr: ${train.lr}
+optimizer: ${train.optimizer}
+optimizer_b_1: ${train.optimizer_b_1}
+optimizer_b_2: ${train.optimizer_b_2}
+
+# replay
+eval_exploration_epsilon: ${eval.eval_exploration_epsilon}
+exploration_epsilon_begin_value: 1
+#exploration_epsilon_decay_frame_fraction: ${train.exploration_epsilon_decay_frame_fraction}
+exploration_epsilon_decay_steps: ${domain.train.exploration_epsilon_decay_steps}
+exploration_epsilon_end_value: 0.1
+target_network_update_period: ${train.target_network_update_period}
+use_preprocessor: true
+use_soft_target: true
+
+# parameters for using prioritized experience replay
+priority_exponent: ${replay.priority_exponent}
+importance_sampling_exponent_begin_value: ${replay.importance_sampling_exponent_begin_value}
+importance_sampling_exponent_end_value: ${replay.importance_sampling_exponent_end_value}
+normalize_weights: ${replay.normalize_weights}
+uniform_sample_probability: ${replay.uniform_sample_probability}
+use_priority_replay: ${replay.use_priority_replay}
+
+#misc
+compress_state: ${replay.compress_state}
+consolidation: false
+task_consolidation: false
+discount: ${domain.discount}
+env_type: ${domain.env_type}
+environment_height: ${domain.environment_height}
+environment_width: ${domain.environment_width}
+impala_conv_scale: ${domain.impala_conv_scale}
+log_grads: false
+lr_task: 0 # not used for DQN variants
+num_stacked_frames: ${domain.num_stacked_frames}
+num_train_frames: ${domain.train.num_train_frames}
+seed: ${train.seed}
+use_impala_encoder: ${domain.use_impala_encoder}
+work_dir: ${paths.work_dir}
+has_attention_mechanism: false  # DQN and its variants do not have attention mechanism
+use_plasticity_injection: false
+
+plot:
+  agent_name: DQN

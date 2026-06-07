@@ -1,0 +1,80 @@
+# @package domain
+_target_: domain.Base_Domain_Miniworld.BaseDomainMiniworld
+defaults:
+  - Base_Domain
+action_repeat: 1
+clip_reward: false
+env_type: miniworld
+eval_env_diff_train_env: false
+gap: 0.27 # gap between each position value
+goal_vis: true #always true for miniworld
+good_episode_length_threshold: 1000  #60 is the optimal
+impala_conv_scale: 1
+max_abs_reward: 1.0 # max absolute reward value
+max_episode_length: 4000 # max number of steps per episode
+max_pos: 6.34 # max position value for x and z axes
+max_returns: 1
+min_pos: -6.34 # min position value for x and z axes
+min_returns: -1
+num_head_directions: 4 # number of directions the agent can face in miniworld (90 degrees each)
+scale_reward: false
+slippery_prob: 0.45 # probability of slipping in the slippery environment
+top_down_view: false # always false for miniworld as it uses egocentric view
+use_impala_encoder: false
+
+eval:
+  eval_every_frames: 100000
+  num_eval_frames: 20000 #approx 5 episodes if max 4000 steps per episode
+
+finetune:
+  num_train_frames: 1000000 # 20% of train.num_train_frames
+  exploration_epsilon_decay_steps: 40000 # APS paper uses 40k time steps to fine-tune the meta
+  logging:
+    experiment: finetune_miniworld
+
+finetune_critic:
+  logging:
+      experiment: finetune_critic_miniworld
+
+plotting:
+  title: "Miniworld"
+  num_clusters: 4 # number of clusters for k-means clustering
+  silhouette_score: false # set to true to plot the silhouette score
+
+post_train:
+  logging:
+    experiment: post_train_miniworld
+
+post_train_all_seeds:
+  logging:
+    experiment: post_train_miniworld_all_seeds
+
+pretrain:
+  num_train_frames: 3750000 # 75% of train.num_train_frames
+  snapshot_pretrain_dir: ./models/pretrain/${domain.pretrain.logging.experiment}/${domain.short_name}/${agent.name}/${train.seed}/sf_dim_${train.sf_dim}/feature_dim_${train.feature_dim}
+  snapshot_pretrain_task_dir: ./models/pretrain_task/${domain.pretrain.logging.experiment}/${domain.short_name}/${agent.name}/${train.seed}/sf_dim_${train.sf_dim}/feature_dim_${train.feature_dim}
+  logging:
+    experiment: pre_train_miniworld
+
+replay:
+  batch_size: 32
+  replay_buffer_size: 100000
+
+train:
+  exploration_epsilon_decay_steps: 1000000
+  num_train_frames: 5000000
+  logging:
+    experiment: full_train_miniworld
+
+test:
+  logging:
+    experiment: test_miniworld
+
+
+visualization:
+  marker_size: 10
+  opacity: 1.0
+  plot_bgcolor: "rgb(159,159,159)"
+  sf_sr_correlation: false # not available for miniworld does not have tabular SR
+  sf_sr_correlation_bottleneck: false # not available for miniworld does not have tabular SR
+  top_view: false # set to true to visualise the top view of the agent

@@ -1,0 +1,104 @@
+defaults:
+  - agent: simple_sf_agent
+  - domain: Miniworld/Miniworld_Two_Tasks
+  - _self_ # this yaml file is overriding configs from the Defaults List (eg. {agent}.yaml)
+  -  resources: null
+
+# params only for SF-based agent
+update_task_every_step: 16
+
+# environment setting
+env:
+  action_repeat: ??? # to be defined later
+  top_down_view: false
+  obs_shape: ??? # to be specified later
+  obs_type: pixels # [states, pixels]
+
+# eval
+eval:
+  eval_after_each_epoch: true
+  eval_after_train_step: 200000 # evaluate after this many steps per task (heuristic by looking at the training curve)
+  eval_every_frames: 10000
+  eval_exploration_epsilon: 0.1
+  num_eval_episodes: 10
+
+# logging
+logging:
+  experiment: minigrid_sr_matrix
+  mode: test
+  project_type: minigrid_sr_matrix
+  save_sr_matrix: true
+  sr_matrix_dir: ./sr_rsm/full_train_minigrid/${domain.short_name}/lr_${train.lr}
+  use_wandb: false
+  wandb_dir: ./wandb
+
+# replay buffer
+replay:
+  batch_size: 32
+  compress_state: true
+  min_replay_capacity_fraction: 0.05
+  nstep: 3
+  replay_buffer_num_workers: 4
+  replay_buffer_size: 1000000
+  reset_buffer_before_each_task: true
+  use_priority_replay: false
+
+  # parameters for using prioritized experience replay
+  priority_exponent: 0.6
+  importance_sampling_exponent_begin_value: 0.4
+  importance_sampling_exponent_end_value: 1.0
+  uniform_sample_probability: 1e-3
+  normalize_weights: true
+
+# snapshot
+# snapshot
+snapshot:
+  base_dir: ./models/
+  save_snapshot_after_each_task: false
+  snapshot_dir: ./models/full_train/${domain.train.logging.experiment}/${domain.short_name}/${agent.name}/${train.seed}/full_obs_${domain.top_down_view}/goal_vis_${domain.goal_vis}/sf_dim_${train.sf_dim}/feature_dim_${train.feature_dim}/buffer_size_${domain.replay.replay_buffer_size}/lr_task_${agent.lr_task}
+
+paths:
+  work_dir: ??? # to be defined later
+
+# train settings
+train:
+  compute_sr_analytically: true  # set to true if you want to compute SR analytically
+  exploration_epsilon_decay_frame_fraction: ???  # epsilon-greedy decay fraction at 0.02 for minigrid
+  exploration_epsilon_decay_steps: 4000000 #dqn zoo uses 4 million steps because action repeat = 4
+  feature_dim: 256
+  grad_error_bound: 10.0
+  learn_period: 16
+  log_frequency: 10000 # log every this many steps
+  lr: 1e-4
+  lr_task: 0.001
+  num_train_frames: 1000000
+  num_seed_frames: ??? # to be defined later
+  optimizer: adam # [rmsprop, adam, sgd]
+  optimizer_b_1: 0.9
+  optimizer_b_2: 0.999
+  optimizer_task: adam
+  seed: 97
+  sf_dim: 256
+  target_network_update_period: 1000
+  terminate_after_first_task: false
+  use_double_q: false
+
+visualization:
+  top_view: true
+  visualise_gridworld: true
+  visualise_rep: false
+  visualise_rep_before_training: false
+
+
+hydra:
+  run:
+    dir: ./exp_local/${now:%Y.%m.%d}/${now:%H%M%S}_${agent.name}
+  sweep:
+    dir: ./exp_sweep/${now:%Y.%m.%d}/${now:%H%M}_${logging.project_type}
+    subdir: ${hydra.job.num}
+  launcher:
+    timeout_min: 4300
+    cpus_per_task: 10
+    mem_gb: 16
+    nodes: 1
+    submitit_folder: ./exp_sweep/${now:%Y.%m.%d}/${now:%H%M}_${logging.project_type}/.slurm

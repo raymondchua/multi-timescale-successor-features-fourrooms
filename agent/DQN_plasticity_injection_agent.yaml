@@ -1,0 +1,7 @@
+# @package agent
+defaults:
+  - DQN_agent
+_target_: agent.DQN_plasticity_injection_agent.DQN_Plasticity_Injection_Agent
+name: DQN_plasticity_injection
+use_plasticity_injection: True
+

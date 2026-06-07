@@ -1,0 +1,11 @@
+# @package agent
+defaults:
+  - DQN_agent
+_target_: agent.DQN_cbp.DQNCBPAgent
+name: dqn_cbp
+dead_eps: 1e-3
+maturity_threshold: 50
+bottom_frac: 0.1
+ema_decay: 0.99
+replacement_rate: 1e-4
+enable_cbp_after: 100_000

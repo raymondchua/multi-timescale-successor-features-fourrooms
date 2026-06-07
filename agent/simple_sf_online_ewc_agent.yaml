@@ -1,0 +1,9 @@
+# @package agent
+defaults:
+  - simple_sf_agent
+_target_: agent.simple_sf_online_ewc_agent.SimpleSF_online_ewc_Agent
+name: simple_sf_online_ewc
+
+ewc_gamma: 0.9
+ewc_regularization: 10
+fisher_update_interval: 10000

@@ -1,0 +1,97 @@
+# @package agent
+_target_: agent.simple_sf_agent.SimpleSFAgent
+action_shape: ??? # to be specified later
+action_repeat: ${env.action_repeat}
+batch_size: ${domain.replay.batch_size}
+critic_target_tau: 0.01
+double_q_learning: true
+encoder_type: default # "default", "random", "laplacian"
+feature_dim: ${train.feature_dim}
+grad_error_bound: ${train.grad_error_bound}
+has_task_params: true
+hidden_dim: 256
+learn_period: ${train.learn_period}
+min_replay_capacity_fraction: ${replay.min_replay_capacity_fraction}
+name: simple_sf_agent
+normalize_task_params: false
+nstep: ${replay.nstep}
+obs_shape: ${env.obs_shape} # to be specified later
+obs_type: ${env.obs_type} # to be specified later
+policy: learned
+replay_buffer_size: ${domain.replay.replay_buffer_size}
+reward_free: false #always false for full train agent
+sf_dim: ${train.sf_dim}
+use_double_q: ${train.use_double_q}
+update_encoder: true #always true for full train agent
+use_wandb: ${logging.use_wandb}
+
+lr: ${train.lr}
+optimizer: ${train.optimizer}
+optimizer_b_1: ${train.optimizer_b_1}
+optimizer_b_2: ${train.optimizer_b_2}
+
+lr_task: ??? # to be specified later
+optimizer_task: ${train.optimizer_task}
+
+# replay
+eval_exploration_epsilon: ${eval.eval_exploration_epsilon}
+exploration_epsilon_begin_value: 1
+#exploration_epsilon_decay_frame_fraction: ${train.exploration_epsilon_decay_frame_fraction}
+exploration_epsilon_decay_steps: ${domain.train.exploration_epsilon_decay_steps}
+exploration_epsilon_end_value: 0.1
+
+# parameters for using prioritized experience replay
+priority_exponent: ${replay.priority_exponent}
+importance_sampling_exponent_begin_value: ${replay.importance_sampling_exponent_begin_value}
+importance_sampling_exponent_end_value: ${replay.importance_sampling_exponent_end_value}
+normalize_weights: ${replay.normalize_weights}
+uniform_sample_probability: ${replay.uniform_sample_probability}
+use_priority_replay: ${replay.use_priority_replay}
+
+
+target_network_update_period: ${train.target_network_update_period}
+use_preprocessor: true
+use_soft_target: true
+
+print_metrics: false
+
+#weights for loss
+update_task_every_step: 16
+w_actor: 1
+w_aps: 1
+w_critic: 1
+
+#misc
+compress_state: ${replay.compress_state}
+consolidation: false
+task_consolidation: false
+environment_height: ${domain.environment_height}
+environment_width: ${domain.environment_width}
+impala_conv_scale: ${domain.impala_conv_scale}
+log_grads: false
+num_stacked_frames: ${domain.num_stacked_frames}
+num_train_frames: ${domain.train.num_train_frames}
+seed: ${train.seed}
+task_dependent_sf: true
+task_tau: 0.9    # might need to be tuned
+update_basis_features_from_sf: true
+use_impala_encoder: ${domain.use_impala_encoder}
+use_pretrained_policy: false
+use_soft_task_update: false
+use_framestack: ${domain.use_framestack}
+work_dir: ${paths.work_dir}
+env_type: ${domain.env_type}
+has_attention_mechanism: false
+use_plasticity_injection: false
+
+minatar:
+    lr_task: 0.00001
+
+miniworld:
+    lr_task: 0.00001
+
+minigrid:
+    lr_task: 0.00001
+
+plot:
+  agent_name: Simple SF
