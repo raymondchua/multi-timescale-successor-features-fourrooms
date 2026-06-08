@@ -12,7 +12,7 @@ For the PyTorch implementation of the Mujoco experiments, check out [Multi-Times
 
 [Paper](https://arxiv.org/abs/2605.26357)
 
-[Blog post]
+[Blog post](https://rayofsunshine.me/projects/balancing_plasticity_stability_project/)
 
 ## Introduction
 
